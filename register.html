@@ -1,30 +1,79 @@
-<script>
-  window.onload = function () {
-    // Ambil kod referral dari URL
-    const params = new URLSearchParams(window.location.search);
-    const refCode = params.get("ref");
-
-    // Masukkan ke input jika ada
-    if (refCode) {
-      document.querySelector('input[name="entry.923888861"]').value = refCode;
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pendaftaran Mouthgasm Crunchy</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff8f0;
+      padding: 30px;
     }
+    form {
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 10px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+    button {
+      background: #ff5722;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #e64a19;
+    }
+  </style>
+</head>
+<body>
 
-    // Setup form submit
-    const form = document.getElementById('regForm');
-    form.addEventListener('submit', async function (e) {
-      e.preventDefault();
+  <form id="regForm">
+    <h2>Daftar Sekarang</h2>
+    <input name="entry.772425978" placeholder="Nama Penuh" required />
+    <input name="entry.1925865201" placeholder="Nombor Telefon" required />
+    <input name="entry.180861232" type="email" placeholder="Email" required />
+    <input name="entry.923888861" id="referralInput" placeholder="Kod Referral (Jika Ada)" />
+    <button type="submit">Hantar</button>
+  </form>
 
-      const data = new FormData(form);
-      const referralCode = data.get("entry.923888861");
-      const redirectURL = `https://kayrollksm.github.io/mouthgasm-referral/thanks.html?ref=${encodeURIComponent(referralCode)}`;
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const params = new URLSearchParams(window.location.search);
+      const refCode = params.get("ref");
+      if (refCode) {
+        document.getElementById("referralInput").value = refCode;
+      }
 
-      await fetch('https://docs.google.com/forms/d/e/1FAIpQLSexA_zhdcsOJ2jg_UQKIIHMofa0OQwAekTWgMIUFJDpalEJKA/formResponse', {
-        method: 'POST',
-        mode: 'no-cors',
-        body: data
+      const form = document.getElementById("regForm");
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const data = new FormData(form);
+        const referralCode = data.get("entry.923888861") || "";
+        const redirectURL = `https://kayrollksm.github.io/mouthgasm-referral/thanks.html?ref=${encodeURIComponent(referralCode)}`;
+
+        await fetch("https://docs.google.com/forms/d/e/1FAIpQLSexA_zhdcsOJ2jg_UQKIIHMofa0OQwAekTWgMIUFJDpalEJKA/formResponse", {
+          method: "POST",
+          mode: "no-cors",
+          body: data
+        });
+
+        window.location.href = redirectURL;
       });
-
-      window.location.href = redirectURL;
     });
-  }
-</script>
+  </script>
+
+</body>
+</html>
