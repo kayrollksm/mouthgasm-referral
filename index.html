@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pendaftaran Mouthgasm Crunchy</title>
+  <script>
+    // Ambil kod referral dari URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const referralCode = urlParams.get('ref');
+
+    // Link form asal
+    const formBase = "https://docs.google.com/forms/d/e/1FAIpQLSexA_zhdcsOJ2jg_UQKIIHMofa0OQwAekTWgMIUFJDpalEJKA/viewform";
+
+    // Kod "entry.774225978" ialah ID untuk field "Kod Referral"
+    const redirectLink = referralCode 
+      ? `${formBase}?usp=pp_url&entry.774225978=${encodeURIComponent(referralCode)}`
+      : formBase;
+
+    // Redirect ke form
+    window.location.href = redirectLink;
+  </script>
+</head>
+<body>
+  <p>Sedang redirect ke borang pendaftaran...</p>
+</body>
+</html>
