@@ -1,47 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="ms">
 <head>
-  <title>Terima Kasih!</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="refresh" content="0;url=https://kayrollksm.github.io/mouthgasm-referral/thanks.html" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Terima Kasih - Mouthgasm Crunchy</title>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: Arial, sans-serif;
+      padding: 2em;
       text-align: center;
-      padding: 50px;
-      background: #f3f3f3;
     }
-    .card {
-      background: white;
-      padding: 30px;
+    .box {
+      background: #f2f2f2;
+      padding: 2em;
       border-radius: 10px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
       display: inline-block;
     }
-    button {
-      margin-top: 15px;
-      padding: 10px 20px;
-      font-size: 16px;
+    input {
+      width: 100%;
+      padding: 0.5em;
+      margin-top: 1em;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Terima kasih kerana mendaftar!</h1>
-    <p>Ini link referral anda:</p>
-    <code id="refLink">Loading...</code><br>
+  <div class="box">
+    <h2>Terima Kasih kerana mendaftar!</h2>
+    <p>Kod Referral anda:</p>
+    <h3 id="id-output">Loading...</h3>
+
+    <p>Copy & share link anda:</p>
+    <input id="share-link" type="text" readonly />
+
     <button onclick="copyLink()">Copy Link</button>
   </div>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const referral = params.get("ref") || "";
-    const link = `https://kayrollksm.github.io/mouthgasm-referral/?ref=${referral}`;
-    document.getElementById("refLink").innerText = link;
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+
+    if (id) {
+      document.getElementById("id-output").innerText = id;
+      const link = `https://kayrollksm.github.io/mouthgasm-referral/?ref=${id}`;
+      document.getElementById("share-link").value = link;
+    } else {
+      document.getElementById("id-output").innerText = "ID tidak ditemui.";
+    }
 
     function copyLink() {
-      navigator.clipboard.writeText(link);
+      const input = document.getElementById("share-link");
+      input.select();
+      document.execCommand("copy");
       alert("Link telah disalin!");
     }
   </script>
