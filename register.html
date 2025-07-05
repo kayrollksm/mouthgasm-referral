@@ -2,78 +2,72 @@
 <html lang="ms">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pendaftaran Mouthgasm Crunchy</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #fff8f0;
-      padding: 30px;
-    }
-    form {
-      background: #ffffff;
-      padding: 25px;
-      border-radius: 10px;
-      max-width: 400px;
-      margin: auto;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    }
-    h2 {
-      text-align: center;
-    }
-    input, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      font-size: 16px;
-    }
-    button {
-      background: #ff5722;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #e64a19;
-    }
-  </style>
 </head>
 <body>
+  <h2>Pendaftaran Mouthgasm Crunchy</h2>
 
-  <form id="regForm">
-    <h2>Daftar Sekarang</h2>
-    <input name="entry.772425978" placeholder="Nama Penuh" required />
-    <input name="entry.1925865201" placeholder="Nombor Telefon" required />
-    <input name="entry.180861232" type="email" placeholder="Email" required />
-    <input name="entry.923888861" id="referralInput" placeholder="Kod Referral (Jika Ada)" />
+  <form id="register-form">
+    <label>Nama Penuh:</label><br/>
+    <input type="text" name="name" required /><br/><br/>
+
+    <label>Nombor Telefon:</label><br/>
+    <input type="text" name="phone" required /><br/><br/>
+
+    <label>Email:</label><br/>
+    <input type="email" name="email" required /><br/><br/>
+
+    <label>Kod Referral (jika ada):</label><br/>
+    <input type="text" name="referral" id="referral" /><br/><br/>
+
     <button type="submit">Hantar</button>
   </form>
 
+  <p id="status-msg"></p>
+
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const params = new URLSearchParams(window.location.search);
-      const refCode = params.get("ref");
-      if (refCode) {
-        document.getElementById("referralInput").value = refCode;
-      }
+    // Autofill referral dari URL
+    const params = new URLSearchParams(window.location.search);
+    const referral = params.get("ref");
+    if (referral) {
+      document.getElementById("referral").value = referral;
+    }
 
-      const form = document.getElementById("regForm");
-      form.addEventListener("submit", async function (e) {
-        e.preventDefault();
-        const data = new FormData(form);
-        const referralCode = data.get("entry.923888861") || "";
-        const redirectURL = `https://kayrollksm.github.io/mouthgasm-referral/thanks.html?ref=${encodeURIComponent(referralCode)}`;
+    // Google Form POST endpoint
+    const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSexA_zhdcsOJ2jg_UQKIIHMofa0OQwAekTWgMIUFJDpalEJKA/formResponse";
 
-        await fetch("https://docs.google.com/forms/d/e/1FAIpQLSexA_zhdcsOJ2jg_UQKIIHMofa0OQwAekTWgMIUFJDpalEJKA/formResponse", {
-          method: "POST",
-          mode: "no-cors",
-          body: data
+    // Entry IDs ikut susunan Google Form
+    const entryIds = {
+      name: "entry.774225978",
+      phone: "entry.1920451671",
+      email: "entry.1428323858",
+      referral: "entry.1022881571",
+    };
+
+    // Submit handler
+    document.getElementById("register-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      
+      const form = e.target;
+      const formData = new FormData();
+      formData.append(entryIds.name, form.name.value);
+      formData.append(entryIds.phone, form.phone.value);
+      formData.append(entryIds.email, form.email.value);
+      formData.append(entryIds.referral, form.referral.value);
+
+      fetch(formUrl, {
+        method: "POST",
+        mode: "no-cors",
+        body: formData,
+      })
+        .then(() => {
+          window.location.href = "thank.html"; // Redirect bila berjaya
+        })
+        .catch(() => {
+          document.getElementById("status-msg").innerText = "Gagal submit, cuba lagi.";
         });
-
-        window.location.href = redirectURL;
-      });
     });
   </script>
-
 </body>
 </html>
