@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Terima Kasih!</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="0;url=https://kayrollksm.github.io/mouthgasm-referral/thanks.html" />
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 50px;
+      background: #f3f3f3;
+    }
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      display: inline-block;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Terima kasih kerana mendaftar!</h1>
+    <p>Ini link referral anda:</p>
+    <code id="refLink">Loading...</code><br>
+    <button onclick="copyLink()">Copy Link</button>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const referral = params.get("ref") || "";
+    const link = `https://kayrollksm.github.io/mouthgasm-referral/?ref=${referral}`;
+    document.getElementById("refLink").innerText = link;
+
+    function copyLink() {
+      navigator.clipboard.writeText(link);
+      alert("Link telah disalin!");
+    }
+  </script>
+</body>
+</html>
