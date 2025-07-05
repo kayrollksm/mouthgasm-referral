@@ -4,70 +4,118 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pendaftaran Mouthgasm Crunchy</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      padding: 30px;
+      text-align: center;
+    }
+    form {
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      width: 100%;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px;
+      width: 100%;
+      background: #333;
+      color: white;
+      border: none;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #status-msg {
+      margin-top: 15px;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
 </head>
 <body>
+
   <h2>Pendaftaran Mouthgasm Crunchy</h2>
 
   <form id="register-form">
-    <label>Nama Penuh:</label><br/>
-    <input type="text" name="name" required /><br/><br/>
-
-    <label>Nombor Telefon:</label><br/>
-    <input type="text" name="phone" required /><br/><br/>
-
-    <label>Email:</label><br/>
-    <input type="email" name="email" required /><br/><br/>
-
-    <label>Kod Referral (jika ada):</label><br/>
-    <input type="text" name="referral" id="referral" /><br/><br/>
-
+    <input type="text" name="name" placeholder="Nama Penuh" required />
+    <input type="text" name="phone" placeholder="Nombor Telefon" required />
+    <input type="email" name="email" placeholder="Email" required />
+    <input type="text" name="referral" id="referral" placeholder="Kod Referral (opsyenal)" />
     <button type="submit">Hantar</button>
   </form>
 
   <p id="status-msg"></p>
 
   <script>
-    // Autofill referral dari URL
+    // STEP 1: Auto isi Kod Referral dari URL
     const params = new URLSearchParams(window.location.search);
-    const referral = params.get("ref");
-    if (referral) {
-      document.getElementById("referral").value = referral;
+    const refCode = params.get("ref");
+    if (refCode) {
+      document.getElementById("referral").value = refCode;
     }
 
-    // Google Form POST endpoint
+    // STEP 2: Define Google Form action URL
     const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSexA_zhdcsOJ2jg_UQKIIHMofa0OQwAekTWgMIUFJDpalEJKA/formResponse";
 
-    // Entry IDs ikut susunan Google Form
+    // STEP 3: Map nama input kepada Entry ID Google Form
     const entryIds = {
       name: "entry.774225978",
       phone: "entry.1920451671",
       email: "entry.1428323858",
-      referral: "entry.1022881571",
+      referral: "entry.1022881571"
     };
 
-    // Submit handler
+    // STEP 4: Bila user tekan submit
     document.getElementById("register-form").addEventListener("submit", function (e) {
       e.preventDefault();
-      
+
       const form = e.target;
+
+      // Prepare form data untuk Google Form
       const formData = new FormData();
       formData.append(entryIds.name, form.name.value);
       formData.append(entryIds.phone, form.phone.value);
       formData.append(entryIds.email, form.email.value);
       formData.append(entryIds.referral, form.referral.value);
 
+      // DEBUG log: tengok apa yang dihantar
+      console.log("Hantar data ke Google Form:");
+      console.log("Nama:", form.name.value);
+      console.log("Phone:", form.phone.value);
+      console.log("Email:", form.email.value);
+      console.log("Referral:", form.referral.value);
+
+      // STEP 5: Hantar ke Google Form
       fetch(formUrl, {
         method: "POST",
         mode: "no-cors",
         body: formData,
       })
-        .then(() => {
-          window.location.href = "thank.html"; // Redirect bila berjaya
-        })
-        .catch(() => {
-          document.getElementById("status-msg").innerText = "Gagal submit, cuba lagi.";
-        });
+      .then(() => {
+        // Berjaya submit → redirect
+        document.getElementById("status-msg").innerText = "Pendaftaran berjaya! Redirect...";
+        const redirectId = form.referral.value || "TIADA-ID";
+        setTimeout(() => {
+          window.location.href = `thank.html?id=${encodeURIComponent(redirectId)}`;
+        }, 1000);
+      })
+      .catch((error) => {
+        console.error("Ralat semasa submit:", error);
+        document.getElementById("status-msg").innerText = "Gagal submit. Sila cuba lagi.";
+      });
     });
   </script>
+
 </body>
 </html>
