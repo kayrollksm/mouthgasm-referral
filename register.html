@@ -1,25 +1,30 @@
 <script>
-  // AUTO MASUKKAN REF KE DALAM INPUT
-  const params = new URLSearchParams(window.location.search);
-  const refCode = params.get("ref");
-  if (refCode) {
-    document.querySelector('input[name="entry.923888861"]').value = refCode;
-  }
+  window.onload = function () {
+    // Ambil kod referral dari URL
+    const params = new URLSearchParams(window.location.search);
+    const refCode = params.get("ref");
 
-  const form = document.getElementById('regForm');
-  form.addEventListener('submit', async function (e) {
-    e.preventDefault();
+    // Masukkan ke input jika ada
+    if (refCode) {
+      document.querySelector('input[name="entry.923888861"]').value = refCode;
+    }
 
-    const data = new FormData(form);
-    const referralCode = data.get("entry.923888861");
-    const redirectURL = `https://kayrollksm.github.io/mouthgasm-referral/thanks.html?ref=${encodeURIComponent(referralCode)}`;
+    // Setup form submit
+    const form = document.getElementById('regForm');
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
 
-    await fetch('https://docs.google.com/forms/d/e/1FAIpQLSexA_zhdcsOJ2jg_UQKIIHMofa0OQwAekTWgMIUFJDpalEJKA/formResponse', {
-      method: 'POST',
-      mode: 'no-cors',
-      body: data
+      const data = new FormData(form);
+      const referralCode = data.get("entry.923888861");
+      const redirectURL = `https://kayrollksm.github.io/mouthgasm-referral/thanks.html?ref=${encodeURIComponent(referralCode)}`;
+
+      await fetch('https://docs.google.com/forms/d/e/1FAIpQLSexA_zhdcsOJ2jg_UQKIIHMofa0OQwAekTWgMIUFJDpalEJKA/formResponse', {
+        method: 'POST',
+        mode: 'no-cors',
+        body: data
+      });
+
+      window.location.href = redirectURL;
     });
-
-    window.location.href = redirectURL;
-  });
+  }
 </script>
