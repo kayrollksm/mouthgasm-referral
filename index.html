@@ -1,26 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ms">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pendaftaran Mouthgasm Crunchy</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background: #fff3e0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      text-align: center;
+    }
+    .loader {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #ff5722;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .tagline {
+      font-size: 1.2rem;
+      color: #444;
+    }
+  </style>
   <script>
-    // Ambil kod referral dari URL
     const urlParams = new URLSearchParams(window.location.search);
-    const referralCode = urlParams.get('ref');
+    const referralCode = urlParams.get("ref");
 
-    // Link form asal
-    const formBase = "https://docs.google.com/forms/d/e/1FAIpQLSexA_zhdcsOJ2jg_UQKIIHMofa0OQwAekTWgMIUFJDpalEJKA/viewform";
+    const baseForm = "https://docs.google.com/forms/d/e/1FAIpQLSexA_zhdcsOJ2jg_UQKIIHMofa0OQwAekTWgMIUFJDpalEJKA/viewform";
+    const referralEntry = "entry.774225978";
 
-    // Kod "entry.774225978" ialah ID untuk field "Kod Referral"
-    const redirectLink = referralCode 
-      ? `${formBase}?usp=pp_url&entry.774225978=${encodeURIComponent(referralCode)}`
-      : formBase;
+    const redirectLink = referralCode
+      ? `${baseForm}?usp=pp_url&${referralEntry}=${encodeURIComponent(referralCode)}`
+      : baseForm;
 
-    // Redirect ke form
-    window.location.href = redirectLink;
+    // Delay sikit untuk tunjuk loading animation
+    setTimeout(() => {
+      window.location.href = redirectLink;
+    }, 1500);
   </script>
 </head>
 <body>
-  <p>Sedang redirect ke borang pendaftaran...</p>
+  <div class="loader"></div>
+  <p class="tagline">Mouthgasm Crunchy sedang redirect ke borang pendaftaran...</p>
 </body>
 </html>
