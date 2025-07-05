@@ -7,49 +7,63 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 2em;
       text-align: center;
+      background: #f9f9f9;
+      padding: 50px;
     }
     .box {
-      background: #f2f2f2;
-      padding: 2em;
+      background: #ffffff;
       border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
       display: inline-block;
     }
+    .link-box {
+      margin-top: 20px;
+    }
     input {
+      padding: 10px;
       width: 100%;
-      padding: 0.5em;
-      margin-top: 1em;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      font-size: 16px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <div class="box">
-    <h2>Terima Kasih kerana mendaftar!</h2>
+    <h2>Terima kasih kerana mendaftar!</h2>
     <p>Kod Referral anda:</p>
-    <h3 id="id-output">Loading...</h3>
+    <h3 id="ref-id">Loading...</h3>
 
-    <p>Copy & share link anda:</p>
-    <input id="share-link" type="text" readonly />
-
-    <button onclick="copyLink()">Copy Link</button>
+    <div class="link-box">
+      <p>Link untuk dikongsi:</p>
+      <input type="text" id="ref-link" readonly>
+      <button onclick="copyLink()">Copy Link</button>
+    </div>
   </div>
 
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id');
+    const params = new URLSearchParams(window.location.search);
+    const refId = params.get("id");
 
-    if (id) {
-      document.getElementById("id-output").innerText = id;
-      const link = `https://kayrollksm.github.io/mouthgasm-referral/?ref=${id}`;
-      document.getElementById("share-link").value = link;
+    if (refId) {
+      const link = `https://kayrollksm.github.io/mouthgasm-referral/?ref=${refId}`;
+      document.getElementById("ref-id").innerText = refId;
+      document.getElementById("ref-link").value = link;
     } else {
-      document.getElementById("id-output").innerText = "ID tidak ditemui.";
+      document.getElementById("ref-id").innerText = "Tiada ID dijumpai.";
     }
 
     function copyLink() {
-      const input = document.getElementById("share-link");
+      const input = document.getElementById("ref-link");
       input.select();
+      input.setSelectionRange(0, 99999); // For mobile
       document.execCommand("copy");
       alert("Link telah disalin!");
     }
