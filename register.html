@@ -1,39 +1,24 @@
-<!-- register.html -->
-<form id="register-form">
-  <input type="text" name="name" placeholder="Nama Penuh" required />
-  <input type="text" name="phone" placeholder="Nombor Telefon" required />
-  <input type="email" name="email" placeholder="Email" required />
-  <input type="text" name="referral" placeholder="Kod Referral (jika ada)" />
-  <button type="submit">Daftar</button>
-</form>
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <title>Daftar Mouthgasm</title>
+  <style>
+    body { font-family: sans-serif; max-width: 500px; margin: auto; padding-top: 30px; }
+    input, button { display: block; width: 100%; padding: 10px; margin-bottom: 15px; }
+  </style>
+</head>
+<body>
 
-<script>
-  document.getElementById("register-form").addEventListener("submit", function (e) {
-    e.preventDefault();
+  <h2>Daftar Mouthgasm Crunchy</h2>
+  <form id="registerForm" action="https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse" method="POST" target="_blank">
+    <input name="entry.1278425710" type="text" placeholder="Nama Penuh" required>
+    <input name="entry.1042997682" type="text" placeholder="No. Telefon" required>
+    <input name="entry.865999648" type="email" placeholder="Email" required>
+    <input name="entry.1290611573" type="text" placeholder="Kod Referral (jika ada)">
+    
+    <button type="submit">Hantar</button>
+  </form>
 
-    const form = e.target;
-    const data = {
-      name: form.name.value,
-      phone: form.phone.value,
-      email: form.email.value,
-      referral: form.referral.value,
-    };
-
-    fetch("https://script.google.com/macros/s/AKfycbxNHCR0UN85beu0a339vWwUUFvO1oCtBLxDyiyFMjoI47-_Xe6mlFsFcPXaq5uUVlOi/exec", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json"
-      },
-    })
-      .then((res) => res.json())
-      .then((response) => {
-        const id = response.idPendaftar;
-        window.location.href = `thank.html?ref=${id}`;
-      })
-      .catch((error) => {
-        alert("Pendaftaran gagal. Sila cuba lagi.");
-        console.error("Error:", error);
-      });
-  });
-</script>
+</body>
+</html>
