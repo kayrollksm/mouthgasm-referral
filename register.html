@@ -2,23 +2,44 @@
 <html lang="ms">
 <head>
   <meta charset="UTF-8">
-  <title>Daftar Mouthgasm</title>
+  <title>Daftar Mouthgasm Crunchy</title>
   <style>
-    body { font-family: sans-serif; max-width: 500px; margin: auto; padding-top: 30px; }
-    input, button { display: block; width: 100%; padding: 10px; margin-bottom: 15px; }
+    body { font-family: Arial, sans-serif; max-width: 450px; margin: 50px auto; }
+    h2 { text-align: center; }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #6a0dad;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
 
   <h2>Daftar Mouthgasm Crunchy</h2>
-  <form id="registerForm" action="https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse" method="POST" target="_blank">
-    <input name="entry.1278425710" type="text" placeholder="Nama Penuh" required>
-    <input name="entry.1042997682" type="text" placeholder="No. Telefon" required>
-    <input name="entry.865999648" type="email" placeholder="Email" required>
-    <input name="entry.1290611573" type="text" placeholder="Kod Referral (jika ada)">
+
+  <form action="https://docs.google.com/forms/d/e/1FAIpQLSexA_zhdcsOJ2jg_UQKIIHMofa0OQwAekTWgMIUFJDpalEJKA/formResponse"
+        method="POST"
+        target="hidden_iframe"
+        onsubmit="submitted=true;">
     
-    <button type="submit">Hantar</button>
+    <input name="entry.1278425710" placeholder="Nama Penuh" required>
+    <input name="entry.1042997682" placeholder="No. Telefon" required>
+    <input name="entry.865999648" placeholder="Email" type="email" required>
+    <input name="entry.1290611573" placeholder="Kod Referral (jika ada)">
+
+    <button type="submit">Daftar Sekarang</button>
   </form>
+
+  <!-- iframe trick untuk redirect -->
+  <iframe name="hidden_iframe" style="display:none;" onload="if(submitted){ window.location.href='thank.html'; }"></iframe>
+  <script> let submitted = false; </script>
 
 </body>
 </html>
