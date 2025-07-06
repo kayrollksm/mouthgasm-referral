@@ -1,121 +1,39 @@
-<!DOCTYPE html>
-<html lang="ms">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pendaftaran Mouthgasm Crunchy</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
-      padding: 30px;
-      text-align: center;
-    }
-    form {
-      background: #fff;
-      padding: 25px;
-      border-radius: 10px;
-      max-width: 400px;
-      margin: auto;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    input {
-      display: block;
-      margin: 10px 0;
-      padding: 10px;
-      width: 100%;
-      font-size: 16px;
-    }
-    button {
-      padding: 10px;
-      width: 100%;
-      background: #333;
-      color: white;
-      border: none;
-      font-size: 16px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    #status-msg {
-      margin-top: 15px;
-      font-weight: bold;
-      color: green;
-    }
-  </style>
-</head>
-<body>
+<!-- register.html -->
+<form id="register-form">
+  <input type="text" name="name" placeholder="Nama Penuh" required />
+  <input type="text" name="phone" placeholder="Nombor Telefon" required />
+  <input type="email" name="email" placeholder="Email" required />
+  <input type="text" name="referral" placeholder="Kod Referral (jika ada)" />
+  <button type="submit">Daftar</button>
+</form>
 
-  <h2>Pendaftaran Mouthgasm Crunchy</h2>
+<script>
+  document.getElementById("register-form").addEventListener("submit", function (e) {
+    e.preventDefault();
 
-  <form id="register-form">
-    <input type="text" name="name" placeholder="Nama Penuh" required />
-    <input type="text" name="phone" placeholder="Nombor Telefon" required />
-    <input type="email" name="email" placeholder="Email" required />
-    <input type="text" name="referral" id="referral" placeholder="Kod Referral (opsyenal)" />
-    <button type="submit">Hantar</button>
-  </form>
-
-  <p id="status-msg"></p>
-
-  <script>
-    // STEP 1: Auto isi Kod Referral dari URL
-    const params = new URLSearchParams(window.location.search);
-    const refCode = params.get("ref");
-    if (refCode) {
-      document.getElementById("referral").value = refCode;
-    }
-
-    // STEP 2: Define Google Form action URL
-    const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSexA_zhdcsOJ2jg_UQKIIHMofa0OQwAekTWgMIUFJDpalEJKA/formResponse";
-
-    // STEP 3: Map nama input kepada Entry ID Google Form
-    const entryIds = {
-      name: "entry.774225978",
-      phone: "entry.1920451671",
-      email: "entry.1428323858",
-      referral: "entry.1022881571"
+    const form = e.target;
+    const data = {
+      name: form.name.value,
+      phone: form.phone.value,
+      email: form.email.value,
+      referral: form.referral.value,
     };
 
-    // STEP 4: Bila user tekan submit
-    document.getElementById("register-form").addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      const form = e.target;
-
-      // Prepare form data untuk Google Form
-      const formData = new FormData();
-      formData.append(entryIds.name, form.name.value);
-      formData.append(entryIds.phone, form.phone.value);
-      formData.append(entryIds.email, form.email.value);
-      formData.append(entryIds.referral, form.referral.value);
-
-      // DEBUG log: tengok apa yang dihantar
-      console.log("Hantar data ke Google Form:");
-      console.log("Nama:", form.name.value);
-      console.log("Phone:", form.phone.value);
-      console.log("Email:", form.email.value);
-      console.log("Referral:", form.referral.value);
-
-      // STEP 5: Hantar ke Google Form
-      fetch(formUrl, {
-        method: "POST",
-        mode: "no-cors",
-        body: formData,
-      })
-      .then(() => {
-        // Berjaya submit → redirect
-        document.getElementById("status-msg").innerText = "Pendaftaran berjaya! Redirect...";
-        const redirectId = form.referral.value || "TIADA-ID";
-        setTimeout(() => {
-          window.location.href = `thank.html?id=${encodeURIComponent(redirectId)}`;
-        }, 1000);
+    fetch("https://script.google.com/macros/s/AKfycbxNHCR0UN85beu0a339vWwUUFvO1oCtBLxDyiyFMjoI47-_Xe6mlFsFcPXaq5uUVlOi/exec", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json"
+      },
+    })
+      .then((res) => res.json())
+      .then((response) => {
+        const id = response.idPendaftar;
+        window.location.href = `thank.html?ref=${id}`;
       })
       .catch((error) => {
-        console.error("Ralat semasa submit:", error);
-        document.getElementById("status-msg").innerText = "Gagal submit. Sila cuba lagi.";
+        alert("Pendaftaran gagal. Sila cuba lagi.");
+        console.error("Error:", error);
       });
-    });
-  </script>
-
-</body>
-</html>
+  });
+</script>
