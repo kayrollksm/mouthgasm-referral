@@ -2,15 +2,37 @@
 <html lang="ms">
 <head>
   <meta charset="UTF-8">
-  <title>Terima Kasih!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terima Kasih</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 450px;
+      margin: 50px auto;
+      padding: 20px;
+      text-align: center;
+    }
+    .id-box {
+      background-color: #f0f0f0;
+      padding: 15px;
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 20px;
+      border-radius: 5px;
+    }
+  </style>
 </head>
 <body>
-  <h2>Terima kasih kerana mendaftar!</h2>
-  <p>ID Pendaftar anda: <strong id="idPendaftar"></strong></p>
+  <h2>Pendaftaran Berjaya!</h2>
+  <p>Terima kasih kerana mendaftar bersama Mouthgasm Crunchy.</p>
+  <div class="id-box">
+    ID Pendaftar anda: <span id="idPendaftar">Sedang dimuat...</span>
+  </div>
 
   <script>
-    const id = localStorage.getItem("idPendaftar");
-    document.getElementById("idPendaftar").innerText = id || "Tidak dijumpai";
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    document.getElementById("idPendaftar").textContent = id ? id : "Tiada ID dijumpai";
   </script>
 </body>
 </html>
