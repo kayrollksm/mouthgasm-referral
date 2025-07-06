@@ -24,23 +24,41 @@
 
   <h2>Daftar Mouthgasm Crunchy</h2>
 
-<form action="https://docs.google.com/forms/d/e/1FAIpQLSexA_zhdcsOJ2jg_UQKIIHMofa0OQwAekTWgMIUFJDpalEJKA/formResponse"
-      method="POST"
-      target="hidden_iframe"
-      onsubmit="submitted=true;">
-
-    
-    <input name="entry.1278425710" placeholder="Nama Penuh" required>
-    <input name="entry.1042997682" placeholder="No. Telefon" required>
-    <input name="entry.865999648" placeholder="Email" type="email" required>
-    <input name="entry.1290611573" placeholder="Kod Referral (jika ada)">
-
+  <form id="register-form">
+    <input name="nama" placeholder="Nama Penuh" required>
+    <input name="phone" placeholder="No. Telefon" required>
+    <input name="email" placeholder="Email" type="email" required>
+    <input name="referral" placeholder="Kod Referral (jika ada)">
     <button type="submit">Daftar Sekarang</button>
   </form>
 
-  <!-- iframe trick untuk redirect -->
-  <iframe name="hidden_iframe" style="display:none;" onload="if(submitted){ window.location.href='thank.html'; }"></iframe>
-  <script> let submitted = false; </script>
+  <script>
+    document.getElementById("register-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        nama: form.nama.value,
+        phone: form.phone.value,
+        email: form.email.value,
+        referral: form.referral.value,
+      };
+
+      fetch("https://script.google.com/macros/s/AKfycbxNHCR0UN85beu0a339vWwUUFvO1oCtBLxDyiyFMjoI47-_Xe6mlFsFcPXag5uUVlOi/exec", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" }
+      })
+      .then(res => res.json())
+      .then(response => {
+        localStorage.setItem("idPendaftar", response.idPendaftar);
+        window.location.href = "thank.html";
+      })
+      .catch(error => {
+        alert("Pendaftaran gagal. Sila cuba lagi.");
+        console.error("Error!", error.message);
+      });
+    });
+  </script>
 
 </body>
 </html>
