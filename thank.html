@@ -1,72 +1,16 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Terima Kasih - Mouthgasm Crunchy</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background: #f9f9f9;
-      padding: 50px;
-    }
-    .box {
-      background: #ffffff;
-      border-radius: 10px;
-      padding: 30px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      display: inline-block;
-    }
-    .link-box {
-      margin-top: 20px;
-    }
-    input {
-      padding: 10px;
-      width: 100%;
-      font-size: 16px;
-      margin-top: 10px;
-    }
-    button {
-      padding: 10px 20px;
-      margin-top: 10px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <title>Terima Kasih!</title>
 </head>
 <body>
-  <div class="box">
-    <h2>Terima kasih kerana mendaftar!</h2>
-    <p>Kod Referral anda:</p>
-    <h3 id="ref-id">Loading...</h3>
-
-    <div class="link-box">
-      <p>Link untuk dikongsi:</p>
-      <input type="text" id="ref-link" readonly>
-      <button onclick="copyLink()">Copy Link</button>
-    </div>
-  </div>
+  <h2>Terima kasih kerana mendaftar!</h2>
+  <p>ID Pendaftar anda: <strong id="idPendaftar"></strong></p>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const refId = params.get("id");
-
-    if (refId) {
-      const link = `https://kayrollksm.github.io/mouthgasm-referral/?ref=${refId}`;
-      document.getElementById("ref-id").innerText = refId;
-      document.getElementById("ref-link").value = link;
-    } else {
-      document.getElementById("ref-id").innerText = "Tiada ID dijumpai.";
-    }
-
-    function copyLink() {
-      const input = document.getElementById("ref-link");
-      input.select();
-      input.setSelectionRange(0, 99999); // For mobile
-      document.execCommand("copy");
-      alert("Link telah disalin!");
-    }
+    const id = localStorage.getItem("idPendaftar");
+    document.getElementById("idPendaftar").innerText = id || "Tidak dijumpai";
   </script>
 </body>
 </html>
